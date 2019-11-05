@@ -9,11 +9,7 @@ namespace FinancialCalculator
 
         static void Main()
         {
-            Console.Title = "Financial calculator";
-            Converter.FlagConversionUSD = false; //флаг показывающий проводилась ли конвертация валюты
-            Converter.FlagConversionEUR = false;
-            Converter.FlagConversionRUB = false;
-            Converter.FlagConversionItselfIntoItself = false; //флаг показывающий проводилась ли конвертация валюты саму в себя
+            Console.Title = "Financial calculator";            
 
             if (countCallMain == 0) //чтобы не грузились данные из файла по несколько раз
             {
@@ -28,9 +24,15 @@ namespace FinancialCalculator
 
                 if (input != "")
                 {
-                    Converter.Result = Converter.USD = Converter.EUR = Converter.RUB = 0; //начальные значения валют и суммы 
-                    string currentNumber = ""; //текущее число
-                    char currentSign = '+'; //текущий знак текущего числа
+                    Converter.FlagConversionUSD = false; //флаг показывающий проводилась ли конвертация валюты
+                    Converter.FlagConversionEUR = false;
+                    Converter.FlagConversionRUB = false;
+                    Converter.FlagConversionItselfIntoItself = false; //флаг показывающий проводилась ли конвертация валюты саму в себя
+                    Converter.Result = 0; //начальное значение суммы 
+                    Converter.USD = 0; //начальное значение валюты
+                    Converter.EUR = 0;
+                    Converter.RUB = 0; 
+                    string currentNumber = ""; //текущее число                    
                     bool flag = true; //флаг для определения ошибок
                     int index = 0; //индекс начального символа конечной операции
 
@@ -40,7 +42,6 @@ namespace FinancialCalculator
                         {
                             if (input[i] == '+' || input[i] == '-')
                             {
-                                currentSign = input[i];
                                 currentNumber = input[i].ToString();
                             }
                             else if (char.IsDigit(input[i]) == true)
@@ -112,7 +113,7 @@ namespace FinancialCalculator
                         flag = false;
                     }                    
 
-                    string currencySign = "";
+                    string currencySign = ""; //знак валюты
                     double temp = 0; //на случай если будет только 1 валюта
 
                     if (index != 0 && flag == true)
@@ -155,7 +156,7 @@ namespace FinancialCalculator
                     {
                         Console.WriteLine("Конвертация валюты саму в себя недопустимо!");
                     }
-                    else if (Converter.FlagConversionItselfIntoItself == false )
+                    else if (Converter.FlagConversionItselfIntoItself == false)
                     {
                         Console.WriteLine("Результат: " + Converter.Result + currencySign);
                         message = XmlData.SaveData(input, Converter.Result.ToString() + currencySign);
@@ -185,7 +186,8 @@ namespace FinancialCalculator
             else
             {
                 Console.WriteLine(message);
-                Console.Read();
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
     }

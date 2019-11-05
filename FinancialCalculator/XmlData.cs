@@ -18,12 +18,13 @@ namespace FinancialCalculator
             {
                 fs = new FileStream(Directory.GetCurrentDirectory() + "\\СurrencyRate.xml", FileMode.Open);
                 xmlDoc.Load(fs);
+                fs.Close();
             }
             catch
             {
                 flag = false;
                 errorString = "Ошибка при чтении файла с курсами валют!";
-            }
+            }            
 
             if (flag == true)
             {
@@ -73,7 +74,7 @@ namespace FinancialCalculator
                 {
                     try
                     {
-                        int id;
+                        int id = 0;
 
                         for (int i = 0; i < list.Count; i++)
                         {
