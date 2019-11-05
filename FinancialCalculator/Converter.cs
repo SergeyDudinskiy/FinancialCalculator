@@ -126,39 +126,6 @@ namespace FinancialCalculator
                     RUB -= value;
                     break;
             }
-
-            //switch (operation)
-            //{
-            //    case ":USDToEUR":
-            //        EUR += Math.Round(value * USDToEUR, 2);
-            //        FlagConversionUSD = true;
-            //        break;
-            //    case ":EURToUSD":
-            //        USD += Math.Round(value * EURToUSD, 2);
-            //        FlagConversionEUR = true;
-            //        break;
-            //    case ":USDToRUB":
-            //        RUB += Math.Round(value * USDToRUB, 2);
-            //        FlagConversionUSD = true;
-            //        break;
-            //    case ":RUBToUSD":
-            //        USD += Math.Round(value * RUBToUSD, 2);
-            //        FlagConversionRUB = true;
-            //        break;
-            //    case ":EURToRUB":
-            //        RUB += Math.Round(value * EURToRUB, 2);
-            //        FlagConversionEUR = true;
-            //        break;
-            //    case ":RUBToEUR":
-            //        EUR += Math.Round(value * RUBToEUR, 2);
-            //        FlagConversionRUB = true;
-            //        break;
-            //    default:
-            //        FlagConversionItselfIntoItself = true;
-            //        break;                
-            //}
-
-            //Currency = operation.Substring(operation.Length - 3, 3);
         }
     }
 }
