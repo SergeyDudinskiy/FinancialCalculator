@@ -4,7 +4,7 @@ namespace FinancialCalculator
 {
     class Program
     {
-        static string message = ""; //будет хранить собщение об ошибке
+        static string errorMessage = ""; //будет хранить собщение об ошибке
         static int countCallMain = 0; //кол-во вызовов Main()
 
         static void Main()
@@ -14,10 +14,10 @@ namespace FinancialCalculator
             if (countCallMain == 0) //чтобы не грузились данные из файла по несколько раз
             {
                 countCallMain++;
-                message = XmlData.GetRate(); //загружаем курсы валют
+                errorMessage = XmlData.GetRate(); //загружаем курсы валют
             }
 
-            if (message == "") //если нет ошибок при чтении курса валют из файла
+            if (errorMessage == "") //если нет ошибок при чтении курса валют из файла
             {
                 Console.Write("Входное выражение:");
                 string input = Console.ReadLine().Replace(" ", ""); //входное выражение без пробелов
@@ -33,7 +33,7 @@ namespace FinancialCalculator
                     Converter.EUR = 0;
                     Converter.RUB = 0; 
                     string currentNumber = ""; //текущее число                    
-                    bool flag = true; //флаг для определения ошибок
+                    bool errorFlag = false; //флаг для определения ошибок
                     int index = 0; //индекс начального символа конечной операции
 
                     try
@@ -71,34 +71,16 @@ namespace FinancialCalculator
                             else if (input.Length >= i + 6 && input.Substring(i, 6) == ":ToRub")
                             {
                                 Converter.Convert(":" + Converter.Currency + "ToRUB", Convert.ToDouble(currentNumber));
-
-                                if (Converter.FlagConversionItselfIntoItself == true)
-                                {
-                                    break;
-                                }
-
                                 i += 5;
                             }
                             else if (input.Length >= i + 7 && input.Substring(i, 7) == ":ToEuro")
                             {
                                 Converter.Convert(":" + Converter.Currency + "ToEUR", Convert.ToDouble(currentNumber));
-
-                                if (Converter.FlagConversionItselfIntoItself == true)
-                                {
-                                    break;
-                                }
-
                                 i += 6;
                             }
                             else if (input.Length >= i + 9 && input.Substring(i, 9) == ":ToDollar")
                             {
                                 Converter.Convert(":" + Converter.Currency + "ToUSD", Convert.ToDouble(currentNumber));
-
-                                if (Converter.FlagConversionItselfIntoItself == true)
-                                {
-                                    break;
-                                }
-
                                 i += 8;
                             }
                             else if (i + 1 != input.Length && input[i] == ',' && input[i + 1] == 'T')
@@ -106,17 +88,27 @@ namespace FinancialCalculator
                                 index = i + 1;
                                 break;
                             }
+                            else
+                            {
+                                errorFlag = true;
+                                break;
+                            }
+
+                            if (Converter.FlagConversionItselfIntoItself == true)
+                            {
+                                break;
+                            }
                         }
                     }                    
                     catch
                     {
-                        flag = false;
-                    }                    
-
+                        errorFlag = true;
+                    }
+                    
                     string currencySign = ""; //знак валюты
                     double temp = 0; //на случай если будет только 1 валюта
 
-                    if (index != 0 && flag == true)
+                    if (index != 0 && errorFlag == false)
                     {
                         if (input.Length >= index + 5 && input.Substring(index, 5) == "ToRub")
                         {
@@ -144,11 +136,11 @@ namespace FinancialCalculator
                         }
                         else
                         {
-                            flag = false;
+                            errorFlag = true;
                         }
                     }                   
 
-                    if (flag == false)
+                    if (errorFlag == true)
                     {
                         Console.WriteLine("Ошибка во введённом выражении!");
                     }
@@ -159,11 +151,11 @@ namespace FinancialCalculator
                     else if (Converter.FlagConversionItselfIntoItself == false)
                     {
                         Console.WriteLine("Результат: " + Converter.Result + currencySign);
-                        message = XmlData.SaveData(input, Converter.Result.ToString() + currencySign);
+                        errorMessage = XmlData.SaveData(input, Converter.Result.ToString() + currencySign);
 
-                        if (message != "")
+                        if (errorMessage != "")
                         {
-                            Console.WriteLine(message);
+                            Console.WriteLine(errorMessage);
                         }
                     }                                       
                 }
@@ -185,7 +177,7 @@ namespace FinancialCalculator
             }
             else
             {
-                Console.WriteLine(message);
+                Console.WriteLine(errorMessage);
                 Console.ReadKey();
                 Environment.Exit(0);
             }

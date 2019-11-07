@@ -28,12 +28,19 @@ namespace FinancialCalculator
 
             if (flag == true)
             {
-                Converter.USDToEUR = Convert.ToDouble(xmlDoc.GetElementsByTagName("USDToEUR")[0].InnerText);
-                Converter.EURToUSD = Convert.ToDouble(xmlDoc.GetElementsByTagName("EURToUSD")[0].InnerText);
-                Converter.USDToRUB = Convert.ToDouble(xmlDoc.GetElementsByTagName("USDToRUB")[0].InnerText);
-                Converter.RUBToUSD = Convert.ToDouble(xmlDoc.GetElementsByTagName("RUBToUSD")[0].InnerText);
-                Converter.EURToRUB = Convert.ToDouble(xmlDoc.GetElementsByTagName("EURToRUB")[0].InnerText);
-                Converter.RUBToEUR = Convert.ToDouble(xmlDoc.GetElementsByTagName("RUBToEUR")[0].InnerText);
+                try
+                {
+                    Converter.USDToEUR = Convert.ToDouble(xmlDoc.GetElementsByTagName("USDToEUR")[0].InnerText);
+                    Converter.EURToUSD = Convert.ToDouble(xmlDoc.GetElementsByTagName("EURToUSD")[0].InnerText);
+                    Converter.USDToRUB = Convert.ToDouble(xmlDoc.GetElementsByTagName("USDToRUB")[0].InnerText);
+                    Converter.RUBToUSD = Convert.ToDouble(xmlDoc.GetElementsByTagName("RUBToUSD")[0].InnerText);
+                    Converter.EURToRUB = Convert.ToDouble(xmlDoc.GetElementsByTagName("EURToRUB")[0].InnerText);
+                    Converter.RUBToEUR = Convert.ToDouble(xmlDoc.GetElementsByTagName("RUBToEUR")[0].InnerText);
+                }
+                catch
+                {
+                    errorString = "Ошибка при чтении файла с курсами валют!";
+                }
             }
 
             return errorString;
